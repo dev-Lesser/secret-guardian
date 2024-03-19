@@ -3,17 +3,12 @@
 - set environment
 ```
 if __name__ == "__main__":
-    secret = AWSSecrets(environment="dev", config_path="config.toml")
-    secret.set(secret_name="dev/secret-name")
-    secret.get()
-
-    logger.debug(secret.keys().list)
-    logger.debug(secret.get__("RDS_HOST"))
-
-
-    secret = AWSSecrets(environment="dev", config_path="config.toml")
-    secret.get(secret_name="dev/secret-name")
-    logger.debug(secret.get__("RDS_HOST"))
+    handler = AWSSecretsHandler(environment="dev", config_path="config.test.toml")
+    handler.get(secret_name=SECRET_NAME)
+    handler.save_to_environment("RDS_HOST")
+    logger.debug(os.getenv("AWS__RDS_HOST"))  # None
+    handler.save_to_environment("RDS_HOST", env_var_name="TEST")
+    logger.debug(os.getenv("AWS__TEST"))
 
 
 ```
